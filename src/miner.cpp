@@ -585,7 +585,7 @@ void StakeMiner(CWallet *pwallet)
             }
         }
 
-        while (pindexBest->nHeight < LAST_POW_BLOCK)
+        while (pindexBest->nHeight < 120000)
             MilliSleep(60000);
 
         //
@@ -601,7 +601,7 @@ void StakeMiner(CWallet *pwallet)
         if (pblock->SignBlock(*pwallet, nFees))
         {
             SetThreadPriority(THREAD_PRIORITY_NORMAL);
-            CheckStake(pblock, *pwallet, reservekey);
+            CheckStake(pblock, *pwallet);
             SetThreadPriority(THREAD_PRIORITY_LOWEST);
             MilliSleep(500);
         }
