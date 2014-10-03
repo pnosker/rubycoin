@@ -58,6 +58,7 @@ bool fReindex = false;
 bool fBenchmark = false;
 bool fTxIndex = true;
 unsigned int nCoinCacheSize = 5000;
+double nNetworkDriftBuffer;
 
 /** Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) */
 int64 CTransaction::nMinTxFee = 100000;
@@ -1147,7 +1148,7 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees)
 {
     int64 nSubsidy;
     int64 nNetworkWeight_ = GetPoSKernelPS();
-    if(nNetworkWeight_ < 21)
+    if(nNetworkWeight_ < 10)
     {
         nSubsidy = 0;
     }
@@ -2127,6 +2128,9 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
             nValueIn += nTxValueIn;
             nValueOut += nTxValueOut;
             if (tx.IsCoinStake())
+
+		nNetworkDriftBuffer = nTxValueOut*.04;
+		nTxValueOut = nTxValueOut-nNetworkDriftBuffer;
                 nStakeReward = nTxValueOut - nTxValueIn;
             else
                 nFees += nTxValueIn - nTxValueOut;
