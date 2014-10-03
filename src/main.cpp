@@ -2128,13 +2128,13 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
             nValueIn += nTxValueIn;
             nValueOut += nTxValueOut;
             if (tx.IsCoinStake())
-
+        {
 		nNetworkDriftBuffer = nTxValueOut*.04;
 		nTxValueOut = nTxValueOut-nNetworkDriftBuffer;
-                nStakeReward = nTxValueOut - nTxValueIn;
-            else
-                nFees += nTxValueIn - nTxValueOut;
-
+                nStakeReward = nTxValueOut - nTxValueIn;}
+            	else
+                {nFees += nTxValueIn - nTxValueOut;}
+        
             std::vector<CScriptCheck> vChecks;
             if (!tx.CheckInputs(state, view, fScriptChecks, flags, nScriptCheckThreads ? &vChecks : NULL))
                 return false;
