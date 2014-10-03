@@ -2693,8 +2693,8 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
                 return state.DoS(100, error("CheckBlock() : more than one coinstake"));
 
         // Check coinstake timestamp
-        if (!CheckCoinStakeTimestamp(GetBlockTime(), (int64)vtx[1].nTime))
-            return state.DoS(50, error("CheckBlock() : coinstake timestamp violation nTimeBlock=%"PRI64d" nTimeTx=%u", GetBlockTime(), vtx[1].nTime));
+    //    if (!CheckCoinStakeTimestamp(GetBlockTime(), (int64)vtx[1].nTime))
+    //        return state.DoS(50, error("CheckBlock() : coinstake timestamp violation nTimeBlock=%"PRI64d" nTimeTx=%u", GetBlockTime(), vtx[1].nTime));
 
         // Check proof-of-stake block signature
         if (fCheckSig && !CheckBlockSignature())
