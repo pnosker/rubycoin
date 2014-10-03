@@ -523,33 +523,24 @@ void StakeMiner(CWallet *pwallet)
     // Make this thread recognisable as the mining thread
     RenameThread("vericoin-miner");
 
-   try { loop {
+    while (true)
+    {
+        if (fShutdown)
+            return;
 
         while (pwallet->IsLocked())
         {
-            nLastCoinStakeSearchInterval = 0;
-            MilliSleep(1000);
+            Sleep(1000);
+            if (fShutdown)
+                return;
         }
-        
+
         while (vNodes.empty() || IsInitialBlockDownload())
         {
-            nLastCoinStakeSearchInterval = 0;
-            fTryToSync = true;
-            MilliSleep(1000);
+            Sleep(1000);
+            if (fShutdown)
+                return;
         }
-
-        if (fTryToSync)
-        {
-            fTryToSync = false;
-            if (vNodes.size() < 3 || nBestHeight < GetNumBlocksOfPeers())
-            {
-                MilliSleep(60000);
-                continue;
-            }
-        }
-
-        while (pindexBest->nHeight < 120000)
-            MilliSleep(60000);
 
         //
         // Create new block
@@ -565,10 +556,10 @@ void StakeMiner(CWallet *pwallet)
             SetThreadPriority(THREAD_PRIORITY_NORMAL);
             CheckStake(pblock.get(), *pwallet);
             SetThreadPriority(THREAD_PRIORITY_LOWEST);
-            MilliSleep(500);
+            Sleep(500);
         }
         else
-            MilliSleep(nMinerSleep);
+            Sleep(nMinerSleep);
 
         continue;
     }
