@@ -1150,7 +1150,7 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees)
     int64 nNetworkWeight_ = GetPoSKernelPS();
     if(nNetworkWeight_ < 10)
     {
-        nSubsidy = 0;
+        nSubsidy = 0.01;
     }
     else
     {
